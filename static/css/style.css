@@ -1,0 +1,267 @@
+.clearPrefix {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 400 0.4861111111111111em "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+}
+h2 {
+  text-transform: uppercase;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+input {
+  -webkit-appearance: none;
+}
+::selection {
+  background-color: #1ABC9C;
+  color: #fff;
+}
+::-moz-selection {
+  background-color: #1ABC9C;
+  color: #fff;
+}
+div.head {
+  background-color: #1ABC9C;
+  color: #fff;
+  font-size: 13px;
+}
+div.head a {
+  color: #fff;
+}
+#header {
+  width: 79.4%;
+  margin: 0 auto;
+  padding-top: 36px;
+}
+#header > a {
+  float: left;
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  text-shadow: 0px 0px 0 #d0d0d0, 1px 1px 0 #a0a0a0, 2px 2px 0 #717171, 2px 2px 0 #424242, 3px 3px 2px rgba(0, 0, 0, 0.2), 3px 3px 1px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.2);
+}
+#header:after {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+#entrance {
+  float: right;
+  line-height: 30px;
+}
+#entrance:after {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+#entrance li {
+  float: left;
+}
+#purpose {
+  text-align: center;
+  max-width: 600px;
+  margin: 56px auto 0;
+  padding: 0 22%;
+}
+#purpose pre {
+  width: 380px;
+  margin: 18px auto 0;
+  text-align: center;
+  line-height: 40px;
+  background-color: #0A4A3E;
+  border-radius: 3px;
+  color: #34b22b;
+}
+#purpose pre small {
+  color: #aaaaaa;
+}
+#purpose pre a {
+  color: #eee;
+}
+#purpose pre a:link {
+  color: #eee;
+}
+#search {
+  width: 47%;
+  margin: 20px auto 0;
+}
+#search input {
+  width: 100%;
+  font-size: 15px;
+  border: 5px solid #16a085;
+  border-radius: 0;
+  padding: 10px 0;
+  line-height: 25px;
+  text-align: center;
+  color: #111;
+}
+#search input:focus {
+  outline: none;
+}
+div.gh-info {
+  text-align: center;
+  font-size: 0;
+  margin-top: 40px;
+  padding-top: 15px;
+  height: 40px;
+  background-color: #16a086;
+}
+div.gh-info iframe {
+  display: inline-block;
+}
+div.hot-libs {
+  font-size: 0;
+  text-align: center;
+  background-color: #ECF0F1;
+  border-bottom: 1px solid #d2d6d7;
+  padding: 5px 0 15px;
+  display: none;
+}
+div.hot-libs a {
+  display: inline-block;
+  height: 30px;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+div.hot-libs a:first-child {
+  margin-left: 0;
+}
+div.hot-libs a img {
+  vertical-align: middle;
+  height: 30px;
+}
+div.lib {
+  padding: 26px 13% 40px;
+  background-color: #ECF0F1;
+}
+div.lib:nth-child(2n) {
+  background-color: #FFFFFF;
+}
+div.lib h2 {
+  margin: 26px 0 0 0;
+  color: #2e2f2a;
+  font-size: 20px;
+  font-weight: normal;
+}
+div.lib > p {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  color: #5d5d5d;
+}
+div.lib table {
+  width: 100%;
+  margin-top: 15px;
+  text-align: left;
+  border: 1px solid #dddee0;
+  background-color: #fff;
+  border-collapse: collapse;
+}
+div.lib table th,
+div.lib table td {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+}
+div.lib table th {
+  width: 20%;
+  color: #555;
+  line-height: 30px;
+  font-weight: normal;
+  vertical-align: text-top;
+  background-color: #fbfbfb;
+}
+div.lib table th small {
+  color: #acacac;
+}
+div.lib table td {
+  width: 80%;
+  border-left: 1px solid #dddee0;
+}
+div.lib table td pre {
+  font-size: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+div.lib table td code {
+  line-height: 20px;
+  font-family: "Courier New", Courier, monospace;
+  color: #777;
+  font-size: 15px;
+}
+div.lib:after {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+ul.lib-refference {
+  float: left;
+  font-size: 13px;
+  margin-top: 20px;
+}
+ul.lib-refference li {
+  float: left;
+  color: #d8d4d7;
+}
+ul.lib-refference li a {
+  color: #1ABC9C;
+}
+ul.lib-refference:after {
+  content: '';
+  display: block;
+  clear: both;
+  visibility: hidden;
+  height: 0;
+}
+#footer {
+  padding-bottom: 24px;
+  width: 30%;
+  margin: 0 auto;
+  text-align: center;
+}
+#footer img {
+  width: 290px;
+  margin: 50px auto 0;
+}
+#footer p {
+  color: #888;
+}
+#footer p:first-child {
+  margin-top: 14px;
+}
+#footer p:nth-child(2) {
+  margin-top: 26px;
+}
+#footer p a {
+  color: #1ABC9C;
+}
+#footer p small {
+  margin: 0 4px;
+}
