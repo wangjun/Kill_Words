@@ -43,7 +43,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>{{mode.mainTitle}}</th>
+                        <th>{{header.mainTitle}}</th>
                         <td>
                             <h5 class="pronounce" ng-if="isWord">[&nbsp;{{data.basic.pronounce}}&nbsp;]</h5>
                             <ul class="meaning">
@@ -53,7 +53,7 @@
                         </td>
                     </tr>
                     <tr ng-if="isWord">
-                        <th>{{mode.subTitle}}</th>
+                        <th>{{header.subTitle}}</th>
                         <td>
                             <ul class="extend" ng-repeat="item in data.web">
                                 <h5>{{item.key}}</h5>

@@ -8,21 +8,24 @@ app.controller('fetchData', function($scope, $http){
     var url='http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=JSON_CALLBACK&version=1.1&q=';
 
     $scope.check = function(){
+//        显示加载字样
+        $scope.loaded = false;
         var q = $scope.query,
             oldurl = url;
         if(q===' '|| q.length===0) return;
 
         $http.jsonp(oldurl+q).success(function(data){
             display(data);
-        })
+        });
     }
 
     function formatter(data){
         var output={
-            title: data.query,
-            basic: {}
+            title: data.query
         };
-        if(data.hasOwnProperty('basic')){
+        if(data.basic){
+            output.basic = {};
+
             var explains = output.basic.explains = [];
             angular.forEach(data.basic.explains, function(value){
                 var temp = {};
@@ -40,13 +43,12 @@ app.controller('fetchData', function($scope, $http){
                 explains.push(temp);
             })
             output.basic.pronounce = data.basic.phonetic;
-            if(data.hasOwnProperty('web')){
+            if(data.web){
                 output.web = data.web;
             }
             output.mode = 'w';
         }
-        else if(data.hasOwnProperty('translation')){
-            console.log(data.translation);
+        else if(data.translation){
             output.translation = data.translation[0];
             output.mode = 's';
         }
@@ -58,15 +60,16 @@ app.controller('fetchData', function($scope, $http){
         $scope.data = formatter(data);
         if($scope.data.mode==='w'){
             $scope.isWord = true;
-            $scope.mode = {
+            $scope.header = {
                 mainTitle: '单词释义',
                 subTitle: '词义扩展'
             }
         }
         else if($scope.data.mode==='s'){
-            $scope.mode = {
+            $scope.header = {
                 mainTitle: '翻译结果'
             }
+            $scope.isWord= false;
         }
         $scope.loaded=true;
     }
