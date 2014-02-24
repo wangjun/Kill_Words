@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="killws">
 <head>
     <title>多引擎词典查询 - 记录查询历史，复习生词，推荐学习资源</title>
     <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0"/>
+    <meta name="description" content="多引擎词典查询 - 记录查询历史，复习生词，推荐学习资源"/>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="static/css/style.css"/>
 </head>
@@ -20,7 +21,7 @@
             <p>我们的目标是提供这样一个词典：它能查到你想查的单词和想翻译的句子。同时，也提供搜索查询历史和生词笔记的入口，让所有人都能复习自己查过的单词，而不是查过就算了。</p>
         <pre>如何使用：在搜索框中输入要查询的内容 <small>// <a href="https://github.com/staticfile/cli#readme">点击查看说明</a></small></pre>
         </div>
-        <div id="search"><input type="text" placeholder="请输入查询内容 .." autofocus autocomplete="off"/></div>
+        <div id="search"><input ng-change="check()" ng-model="query" type="text" placeholder="请输入查询内容 .." autofocus autocomplete="off"/></div>
         <div class="gh-info">
             <iframe ng-src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" height="20px" scrolling="0" width="85px" src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=watch&amp;count=true"></iframe>
             <iframe ng-src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20" src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=fork&amp;count=true"></iframe>
@@ -35,43 +36,28 @@
         <a href=""><img src="static/image/zepto.png" alt="zepto"/></a>
         <a href=""><img src="static/image/seajs.png" alt="seaJs"/></a>
     </div>
-    <div class="libs">
-        <div class="lib">
-            <h2>risk</h2>
+    <div class="libs" >
+        <p id="loading" ng-if="!loaded">I'm waiting...</p>
+        <div class="lib" ng-if="loaded">
+            <h2>{{data.title}}</h2>
             <table>
                 <tbody>
                     <tr>
-                        <th>基本词典</th>
+                        <th>{{mode.mainTitle}}</th>
                         <td>
-                            <h5 class="pronounce">[risk]</h5>
+                            <h5 class="pronounce" ng-if="isWord">[&nbsp;{{data.basic.pronounce}}&nbsp;]</h5>
                             <ul class="meaning">
-                                <li><i>n. </i>风险；危险；冒险</li>
-                                <li><i>vt. </i>冒…的危险</li>
-                                <li><i>n. </i>(Risk)人名；(英、阿拉伯)里斯克</li>
-                                <li>超级大火锅。</li>
+                                <li ng-if="isWord" ng-repeat="item in data.basic.explains"><i>{{item.type}}&nbsp;</i>{{item.content}}</li>
+                                <li ng-if="!isWord">{{data.translation}}</li>
                             </ul>
                         </td>
                     </tr>
-                    <tr>
-                        <th>词语扩展</th>
+                    <tr ng-if="isWord">
+                        <th>{{mode.subTitle}}</th>
                         <td>
-                            <ul class="extend">
-                                <h5>Risk</h5>
-                                <li>风险</li>
-                                <li>危险</li>
-                                <li>冒险</li>
-                            </ul>
-                            <ul class="extend">
-                                <h5>Risk premium</h5>
-                                <li>风险溢价</li>
-                                <li>风险溢酬</li>
-                                <li>风险贴水</li>
-                            </ul>
-                            <ul class="extend">
-                                <h5>Systematic risk</h5>
-                                <li>系统性风险</li>
-                                <li>系统风险</li>
-                                <li>体系性风险</li>
+                            <ul class="extend" ng-repeat="item in data.web">
+                                <h5>{{item.key}}</h5>
+                                <li ng-repeat="i in item.value">{{i}}</li>
                             </ul>
                         </td>
                     </tr>
@@ -83,18 +69,7 @@
         <p><small>Designed by <a href="https://github.com/sofish">@sofish</a></small></p>
         <p><small>© Copyright 2014<a href="https://github.com/sunivengg"><em> sunaiwen </em></a>.Built upon love.</small></p>
     </div>
-    <script>
-        (function(){
-            var url = 'http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=getData&version=1.1&q=超级无聊';
-            var script = document.createElement('script');
-            script.setAttribute('src', url);
-            document.getElementsByClassName('head')[0].appendChild(script);
-            window.getData = function (obj){
-                console.log(
-                        obj
-                )
-            }
-        })();
-    </script>
+    <script src="static/js/angular.min.js"></script>
+    <script src="static/js/app.js"></script>
 </body>
 </html>
