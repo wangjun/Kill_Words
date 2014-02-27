@@ -1,6 +1,11 @@
-var app = angular.module('killws', []);
+var app = angular.module('killws', ['ngRoute']);
 
-app.controller('fetchData', function($scope, $http){
+app.controller('viewController', function(){
+
+})
+
+app.controller('fetchData', function($scope, $http, $timeout, dataFormatt){
+
     $scope.loaded = false;
     $scope.isWord = false;
 
@@ -8,6 +13,7 @@ app.controller('fetchData', function($scope, $http){
     var url='http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=JSON_CALLBACK&version=1.1&q=';
 
     $scope.check = function(){
+
 //        显示加载字样
         $scope.loaded = false;
         var q = $scope.query,
@@ -19,11 +25,48 @@ app.controller('fetchData', function($scope, $http){
         });
     }
 
-    function formatter(data){
+
+    function display(data){
+//        格式化接收到的对象为适合展示的对象
+        $scope.data = dataFormatt(data);
+
+        if($scope.data.mode==='w'){
+            $scope.isWord = true;
+            $scope.header = {
+                mainTitle: '单词释义',
+                subTitle: '词义扩展'
+            }
+        }
+        else if($scope.data.mode==='s'){
+            $scope.header = {
+                mainTitle: '翻译结果'
+            }
+            $scope.isWord= false;
+        }
+        $scope.loaded=true;
+    }
+});
+
+app.controller('about', function(){
+
+});
+
+//route
+app.config(function($locationProvider, $routeProvider){
+    $routeProvider.when('/about', {
+        controller: 'about',
+        templateUrl: 'template/about.html'
+    });
+    $locationProvider.html5Mode(true);
+})
+
+app.factory('dataFormatt', function(){
+    return function(data){
         var output={
             title: data.query
         };
         if(data.basic){
+
             output.basic = {};
 
             var explains = output.basic.explains = [];
@@ -42,7 +85,12 @@ app.controller('fetchData', function($scope, $http){
 
                 explains.push(temp);
             })
-            output.basic.pronounce = data.basic.phonetic;
+//            中译英有的没有拼音注音
+            if(data.basic.phonetic)
+                output.basic.pronounce = data.basic.phonetic;
+            else
+                output.basic.pronounce = '暂无发音';
+
             if(data.web){
                 output.web = data.web;
             }
@@ -52,25 +100,7 @@ app.controller('fetchData', function($scope, $http){
             output.translation = data.translation[0];
             output.mode = 's';
         }
-        console.log(output);
         return output;
     }
 
-    function display(data){
-        $scope.data = formatter(data);
-        if($scope.data.mode==='w'){
-            $scope.isWord = true;
-            $scope.header = {
-                mainTitle: '单词释义',
-                subTitle: '词义扩展'
-            }
-        }
-        else if($scope.data.mode==='s'){
-            $scope.header = {
-                mainTitle: '翻译结果'
-            }
-            $scope.isWord= false;
-        }
-        $scope.loaded=true;
-    }
 })
