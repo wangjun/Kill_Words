@@ -1,0 +1,138 @@
+.slideOut {
+    @-webkit-keyframes slideIn {
+        0% {
+            width: 0;
+        }
+        100% {
+            width: 100%;
+        }
+    }
+    @-moz-keyframes slideIn {
+        0% {
+            width: 0;
+        }
+        100% {
+            width: 100%;
+        }
+    }
+    @keyframes slideIn {
+        0% {
+            width: 0;
+        }
+        100% {
+            width: 100%;
+        }
+    }
+}
+.slideIn {
+    @-webkit-keyframes slideOut {
+        0% {
+            width: 100%;
+        }
+        100% {
+            width: 0%;
+        }
+    }
+    @-moz-keyframes slideOut {
+        0% {
+            width: 100%;
+        }
+        100% {
+            width: 0%;
+        }
+    }
+    @keyframes slideOut {
+        0% {
+            width: 100%;
+        }
+        100% {
+            width: 0%;
+        }
+    }
+}
+
+.fadeIn {
+    @-webkit-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
+    @-moz-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
+}
+.fadeOut {
+    @-webkit-keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
+        }
+    }
+    @-moz-keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
+        }
+    }
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to{
+            opacity: 0;
+        }
+    }
+}
+
+.zeroMargin {
+    @-webkit-keyframes zeroMargin {
+        from {
+            margin-left: -40px;
+        }
+        to{
+            margin-left: 0;
+        }
+    }
+    @-moz-keyframes zeroMargin {
+        from {
+            margin-left: -40px;
+        }
+        to{
+            margin-left: 0;
+        }
+    }
+    @keyframes zeroMargin {
+        from {
+            margin-left: -40px;
+        }
+        to{
+            margin-left: 0;
+        }
+    }
+}
+.animationFn(@name, @decoration: 0.5s, @fill-mode:forwards){
+    -webkit-animation: @name @decoration @fill-mode;
+    -moz-animation: @name @decoration @fill-mode;
+//    -o-animation: @decoration @name;
+//    animation: @decoration @name;
+}

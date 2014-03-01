@@ -1,10 +1,10 @@
-var app = angular.module('killws', ['ngRoute']);
+var app = angular.module('killws', ['ngRoute', 'ngAnimate']);
 
-app.controller('viewController', function(){
+app.controller('viewController', function($scope){
 
 })
 
-app.controller('fetchData', function($scope, $http, $timeout, dataFormatt){
+app.controller('fetchData', function($scope, $http, dataFormatt, isAboutShow){
 
     $scope.loaded = false;
     $scope.isWord = false;
@@ -25,6 +25,9 @@ app.controller('fetchData', function($scope, $http, $timeout, dataFormatt){
         });
     }
 
+    $scope.showAbout = function(){
+        isAboutShow.conponent = true;
+    }
 
     function display(data){
 //        格式化接收到的对象为适合展示的对象
@@ -47,18 +50,14 @@ app.controller('fetchData', function($scope, $http, $timeout, dataFormatt){
     }
 });
 
-app.controller('about', function(){
+app.controller('aboutCtrl', function($scope, isAboutShow){
+//    简介默认不出现
+    $scope.showAbout = isAboutShow;
 
+    $scope.hideAbout = function(){
+        isAboutShow.conponent = false;
+    }
 });
-
-//route
-app.config(function($locationProvider, $routeProvider){
-    $routeProvider.when('/about', {
-        controller: 'about',
-        templateUrl: 'template/about.html'
-    });
-    $locationProvider.html5Mode(true);
-})
 
 app.factory('dataFormatt', function(){
     return function(data){
@@ -102,5 +101,10 @@ app.factory('dataFormatt', function(){
         }
         return output;
     }
-
 })
+
+//决定简介内容是否出现的service
+app.value('isAboutShow', {
+    conponent: false
+});
+
