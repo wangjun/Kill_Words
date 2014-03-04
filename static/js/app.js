@@ -1,32 +1,57 @@
+
 var app = angular.module('killws', ['ngRoute', 'ngAnimate']);
 
-app.controller('viewController', function($scope){
-
+app.config(function($routeProvider){
+    $routeProvider
+        .when('/', {
+            templateUrl: 'template/search.html'
+        })
 })
 
-app.controller('fetchData', function($scope, $http, dataFormatt, isAboutShow){
+app.controller('viewController', function($scope, db, checkResult, isShow){
+    $scope.$on('storeData', function(){
+        if(!checkResult.recordAbility) return;
 
-    $scope.loaded = false;
-    $scope.isWord = false;
+        db.store(checkResult.title);
+    })
+//加载动画
+    $scope.cover = isShow;
+})
+
+app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataFormatt, isShow){
+
+    $scope.dataShow = dataShow;
+
+//    关闭加载动画
+    isShow.loadCover = false;
 
 //    请求词义的url（jsonp）
     var url='http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=JSON_CALLBACK&version=1.1&q=';
 
     $scope.check = function(){
 
-//        显示加载字样
-        $scope.loaded = false;
-        var q = $scope.query,
-            oldurl = url;
-        if(q===' '|| q.length===0) return;
+//        不能输入一个字母就查一次……这对后面记录查询历史的功能实现造成困难
+        if($scope.timeoutID)
+            $timeout.cancel($scope.timeoutID);
 
-        $http.jsonp(oldurl+q).success(function(data){
-            display(data);
-        });
+        $scope.timeoutID = $timeout(function(){
+            //        显示加载字样
+            dataShow.loaded = false;
+            var q = $scope.query,
+                oldurl = url;
+            if(q===' '|| q.length===0) return;
+
+            $http.jsonp(oldurl+q).success(function(data){
+                display(data);
+                $scope.$emit('storeData');
+            });
+            $timeout.cancel($scope.timeoutID);
+        }, 500);
+
     }
 
     $scope.showAbout = function(){
-        isAboutShow.conponent = true;
+        isShow.conponent = true;
     }
 
     function display(data){
@@ -34,7 +59,7 @@ app.controller('fetchData', function($scope, $http, dataFormatt, isAboutShow){
         $scope.data = dataFormatt(data);
 
         if($scope.data.mode==='w'){
-            $scope.isWord = true;
+            dataShow.isWord = true;
             $scope.header = {
                 mainTitle: '单词释义',
                 subTitle: '词义扩展'
@@ -44,31 +69,61 @@ app.controller('fetchData', function($scope, $http, dataFormatt, isAboutShow){
             $scope.header = {
                 mainTitle: '翻译结果'
             }
-            $scope.isWord= false;
+            dataShow.isWord= false;
+
+//
         }
-        $scope.loaded=true;
+        dataShow.loaded=true;
     }
 });
 
-app.controller('aboutCtrl', function($scope, isAboutShow){
+app.controller('aboutCtrl', function($scope, isShow){
 //    简介默认不出现
-    $scope.showAbout = isAboutShow;
+    $scope.showAbout = isShow;
 
     $scope.hideAbout = function(){
-        isAboutShow.conponent = false;
+        isShow.conponent = false;
     }
 });
 
-app.factory('dataFormatt', function(){
+//存储历史数据
+app.factory('db', function(){
+    var ls = window.localStorage;
+    return {
+        store: function(str){
+//            如果是短语，那只分析第一个单词
+            var w = str.split(' ')[0].toString(), key, valueList;
+
+            for(var i=1; i<= w.length; i++){
+                key = w.slice(0, i);
+                if(!ls.getItem(key))
+                    ls.setItem(key, [w]);
+                else {
+                    valueList = angular.fromJson(ls.getItem(key));
+                    valueList.push(w);
+                    ls.setItem(key, valueList);
+                }
+            }
+
+        },
+        retrieve: function(key){
+            var value = ls.getItem(key);
+
+        }
+    }
+})
+
+//格式化返回的数据
+app.factory('dataFormatt', function(checkResult){
     return function(data){
-        var output={
-            title: data.query
-        };
+
+        checkResult.title = data.query
+
         if(data.basic){
 
-            output.basic = {};
+            checkResult.basic = {};
 
-            var explains = output.basic.explains = [];
+            var explains = checkResult.basic.explains = [];
             angular.forEach(data.basic.explains, function(value){
                 var temp = {};
 
@@ -86,25 +141,45 @@ app.factory('dataFormatt', function(){
             })
 //            中译英有的没有拼音注音
             if(data.basic.phonetic)
-                output.basic.pronounce = data.basic.phonetic;
+                checkResult.basic.pronounce = data.basic.phonetic;
             else
-                output.basic.pronounce = '暂无发音';
+                checkResult.basic.pronounce = '暂无发音';
 
             if(data.web){
-                output.web = data.web;
+                checkResult.web = data.web;
             }
-            output.mode = 'w';
+            checkResult.mode = 'w';
+//            单词模式都是可记录的
+            checkResult.recordAbility = true;
         }
         else if(data.translation){
-            output.translation = data.translation[0];
-            output.mode = 's';
-        }
-        return output;
-    }
-})
+            checkResult.translation = data.translation[0];
 
-//决定简介内容是否出现的service
-app.value('isAboutShow', {
-    conponent: false
+            //        判断是否该记录词条
+            if(checkResult.title === checkResult.translation)
+
+                checkResult.recordAbility = false;
+            else
+                checkResult.recordAbility = true;
+
+            checkResult.mode = 's';
+        }
+
+        return checkResult;
+    }
 });
 
+//决定内容是否出现的service
+app.value('isShow', {
+    conponent: false,
+    loadCover: true
+});
+
+//fetchData配置
+app.value('dataShow', {
+    loaded: false,
+    isWord: false
+});
+
+//查询结果对象
+app.value('checkResult', {});

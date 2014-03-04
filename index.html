@@ -8,90 +8,18 @@
     <link rel="stylesheet" href="static/css/style.css"/>
 </head>
 <body ng-controller="viewController">
-
-<div id="view-conponent">
-    <ng-view class="animate-hook"><!--we will load something here.--></ng-view>
-</div>
-
-<div id="wrapper" ng-controller="fetchData">
-    <div class="head">
-        <div id="header">
-            <a href="staticfile.org" id="title">Kill Words 词典</a>
-            <ul id="entrance">
-                <li><a href="">查询历史</a> / </li>
-                <li><a href="">生词本</a> / </li>
-                <li><a href="javascript:void(0);" ng-click="showAbout()">简介</a></li>
-            </ul>
-        </div>
-        <div id="purpose">
-            <p>我们的目标是提供这样一个词典：它能查到你想查的单词和想翻译的句子。同时，也提供搜索查询历史和生词笔记的入口，让所有人都能复习自己查过的单词，而不是查过就算了。</p>
-        <pre>如何使用：在搜索框中输入要查询的内容 <small>// <a href="https://github.com/staticfile/cli#readme">点击查看说明</a></small></pre>
-        </div>
-        <div id="search"><input ng-change="check()" ng-model="query" type="text" placeholder="请输入中文或英文 .." autofocus autocomplete="off"/></div>
-        <div class="gh-info">
-            <iframe ng-src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" height="20px" scrolling="0" width="85px" src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=watch&amp;count=true"></iframe>
-            <iframe ng-src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20" src="http://ghbtns.com/github-btn.html?user=sunivengg&amp;repo=Kill_Words&amp;type=fork&amp;count=true"></iframe>
+    <div id="view-conponent">
+        <ng-view class="animate-hook"><!--we will load something here.--></ng-view>
+    </div>
+    <div id="load-cover" ng-if="cover.loadCover">
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
         </div>
     </div>
-    <div class="hot-libs">
-        <a href=""><img src="static/image/jquery.png" alt="jquery库"/></a>
-        <a href=""><img src="static/image/twitter-bootstrap.png" alt="bootstrap"/></a>
-        <a href=""><img src="static/image/angular.js.png" alt="angular.js"/></a>
-        <a href=""><img src="static/image/underscore.js.png" alt="underscore"/></a>
-        <a href=""><img src="static/image/backbone.js.png" alt="backbone"/></a>
-        <a href=""><img src="static/image/zepto.png" alt="zepto"/></a>
-        <a href=""><img src="static/image/seajs.png" alt="seaJs"/></a>
-    </div>
-    <div class="libs">
-        <p id="loading" ng-if="!loaded">I'm waiting...</p>
-        <div class="lib" ng-if="loaded">
-            <h2>{{data.title}}</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <th>{{header.mainTitle}}</th>
-                        <td>
-                            <h5 class="pronounce" ng-if="isWord">[&nbsp;{{data.basic.pronounce}}&nbsp;]</h5>
-                            <ul class="meaning">
-                                <li ng-if="isWord" ng-repeat="item in data.basic.explains"><i>{{item.type}}&nbsp;</i>{{item.content}}</li>
-                                <li ng-if="!isWord">{{data.translation}}</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr ng-if="isWord">
-                        <th>{{header.subTitle}}</th>
-                        <td>
-                            <ul class="extend" ng-repeat="item in data.web">
-                                <h5>{{item.key}}</h5>
-                                <li ng-repeat="i in item.value">{{i}}</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div id="footer">
-        <p><small>Designed by <a href="https://github.com/sofish">@sofish</a></small></p>
-        <p><small>&copy; Copyright 2014<a href="https://github.com/sunivengg"><em> sunaiwen </em></a>.Built upon love.</small></p>
-    </div>
-</div>
-
-
-<div ng-controller="aboutCtrl">
-    <div id="about" ng-if="showAbout.conponent">
-        <div id="ab-toolbar">
-            <a href="javascript:void(0);" ng-click="hideAbout()"></a>
-        </div>
-        <div class="ab-content">
-            <h1>关于 Kill Words</h1>
-            <p>这是个人的一个小项目。为了学习AngularJs而存在。</p>
-        </div>
-        <div id="ab-contact">
-            <a class="ic-github" target="_blank" href="http://github.com/sunivengg">g</a><a class="ic-weibo" target="_blank" href="http://weibo.com/sualwaysnai/">s</a><a class="ic-twitter" target="_blank" href="http://twitter.com/sunivengg">t</a><a href="javascript:void(0)" class="ic-email">e<span>sunivengg@gmail.com</span></a>
-        </div>
-    </div>
-</div>
     <script src="static/js/angular.min.js"></script>
     <script src="static/js/angular-route.min.js"></script>
     <script src="static/js/angular-animate.min.js"></script>
