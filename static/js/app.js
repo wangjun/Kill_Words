@@ -13,12 +13,13 @@ app.controller('viewController', function($scope, db, checkResult, isShow){
         if(!checkResult.recordAbility) return;
 
         db.store(checkResult.title);
+//        db.retrieve(checkResult.title);
     })
 //加载动画
     $scope.cover = isShow;
 })
 
-app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataFormatt, isShow){
+app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataFormatt, isShow, db){
 
     $scope.dataShow = dataShow;
 
@@ -29,6 +30,9 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
     var url='http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=JSON_CALLBACK&version=1.1&q=';
 
     $scope.check = function(){
+
+//        获取查询历史，辅助查词
+        $scope.history = db.retrieve($scope.query);
 
 //        不能输入一个字母就查一次……这对后面记录查询历史的功能实现造成困难
         if($scope.timeoutID)
@@ -54,6 +58,72 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
         isShow.conponent = true;
     }
 
+    $scope.selectByKey = function(e){
+
+        var kc = e.keyCode;
+
+        if(kc!==38&&kc!==40&&kc!==13) return;
+//        防止光标移动
+        e.preventDefault();
+
+        var $ = angular.element,
+            currentTarget = $(e.currentTarget);
+            LIs = currentTarget.find('li'),
+            input = currentTarget.find('input'),
+            activeLI = LIs.filter('.active');
+
+//        去掉旧高亮
+        activeLI.removeClass('active');
+
+//        向上选择
+        if(kc===38){
+            if(activeLI.length===0)
+                LIs.eq(-1).addClass('active');
+            else{
+                var prev = activeLI.prev();
+                if(prev) prev.addClass('active');
+            }
+        }
+//        向下选择
+        if(kc===40){
+            if(activeLI.length===0)
+                LIs.eq(0).addClass('active');
+            else{
+                var next = activeLI.next();
+                if(next) next.addClass('active');
+            }
+        }
+
+        if(kc===13){
+//        把高亮条目的值写到输入框内
+            input.val(activeLI.text());
+            input.change();
+//            让下拉条消失
+            $scope.history.showList = false;
+        }
+    }
+
+    $scope.selectByCursor = function(e){
+        if(e.target.tagName.toLowerCase()!='li') return;
+        var $ = angular.element;
+//          删除旧高亮
+        if($(e.currentTarget).find('li.active'))  $(e.currentTarget).find('li.active').removeClass('active');
+        $(e.target).addClass('active');
+    }
+
+    $scope.selectByClick = function(e){
+        if(e.target.tagName.toLowerCase()!='li') return;
+        var $ = angular.element,
+            currentTarget = $(e.currentTarget),
+            target = $(e.target),
+            input = currentTarget.find('input');
+
+        input.val(target.text());
+        input.change();
+        $scope.history.listShow = false;
+
+    }
+
     function display(data){
 //        格式化接收到的对象为适合展示的对象
         $scope.data = dataFormatt(data);
@@ -70,8 +140,6 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
                 mainTitle: '翻译结果'
             }
             dataShow.isWord= false;
-
-//
         }
         dataShow.loaded=true;
     }
@@ -92,23 +160,42 @@ app.factory('db', function(){
     return {
         store: function(str){
 //            如果是短语，那只分析第一个单词
-            var w = str.split(' ')[0].toString(), key, valueList;
+            var w = str.split(' ')[0].toLowerCase(), key, valueList;
 
             for(var i=1; i<= w.length; i++){
                 key = w.slice(0, i);
-                if(!ls.getItem(key))
-                    ls.setItem(key, [w]);
+                if(!ls.getItem(key)){
+                    var tempArr = [];
+                    tempArr.push(w);
+                    tempArr = angular.toJson(tempArr);
+                    ls.setItem(key, tempArr);
+                }
                 else {
                     valueList = angular.fromJson(ls.getItem(key));
+//                    如果数组里已存有要存的值，则退出函数
+                    if(valueList.indexOf(w)!==-1) return;
+
                     valueList.push(w);
+                    var valueList = angular.toJson(valueList);
                     ls.setItem(key, valueList);
                 }
             }
 
         },
-        retrieve: function(key){
-            var value = ls.getItem(key);
+        retrieve: function(str){
+            var key = str.split(' ')[0].toLowerCase(),
+                value = ls.getItem(key);
+            value = {
+                content: angular.fromJson(value)
+            }
+            if(!value){
+                value = {
+                    showList: false
+                }
+            }
+            else value.showList = true;
 
+            return value;
         }
     }
 })
@@ -156,7 +243,7 @@ app.factory('dataFormatt', function(checkResult){
             checkResult.translation = data.translation[0];
 
             //        判断是否该记录词条
-            if(checkResult.title === checkResult.translation)
+            if(checkResult.title.toLowerCase() === checkResult.translation)
 
                 checkResult.recordAbility = false;
             else

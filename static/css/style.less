@@ -143,17 +143,19 @@ div.head {
     }
 }
 #search {
+    position: relative;
     width: 47%;
     margin: 20px/@z auto 0;
+    font-size: 0px;
     input {
         width: 100%;
         box-sizing: border-box;
         -webkit-box-sizing: border-box;
-        font-size: 15px;
+        -moz-box-sizing: border-box;
+        font-size: 16px;
         border: 5px solid #16a085;
         border-radius: 0;
-        padding: 10px 0;
-        line-height: 25px;
+        padding: 12px 0;
         text-align: center;
         color: #111;
         &:focus {
@@ -161,6 +163,23 @@ div.head {
         }
         &::-moz-placeholder {
             color: #bbb;
+        }
+    }
+}
+#history {
+    width: 100%;
+    position: absolute;
+    top: 53px;
+    left: 0;
+    background-color: #fefefe;
+    box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
+    li{
+        text-align: center;
+        padding: 10px 0;
+        font-size: 14px;
+        color: #666;
+        &.active {
+            background-color: #eee;
         }
     }
 }
@@ -175,27 +194,6 @@ div.gh-info {
     background-color: #16a086;
     iframe {
         display: inline-block;
-    }
-}
-div.hot-libs {
-    font-size: 0;
-    text-align: center;
-    background-color: #ECF0F1;
-    border-bottom: 1px solid #d2d6d7;
-    padding: 5px 0 15px;
-    display: none;
-    a {
-        display: inline-block;
-        height: 30px/@z;
-        margin-left: 15px/@z;
-        margin-top: 10px/@z;
-        &:first-child {
-            margin-left: 0;
-        }
-        img {
-            vertical-align: middle;
-            height: 30px/@z;
-        }
     }
 }
 
@@ -449,6 +447,10 @@ div.lib {
         width: 95%;
         padding: 0 2.5%;
     }
+    #history {
+        width: 95%;
+        left: 2.5%;
+    }
     #title {
         display: block;
     }
@@ -517,7 +519,7 @@ div.lib {
 
 //loadcover
 #load-cover.ng-leave {
-    .animationFn(fadeOut, 1s);
+    .animationFn(fadeOut, 0.5s);
 }
 
 //loading

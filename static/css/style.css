@@ -119,18 +119,20 @@ div.head a {
   color: #eee;
 }
 #search {
+  position: relative;
   width: 47%;
   margin: 20px auto 0;
+  font-size: 0px;
 }
 #search input {
   width: 100%;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  font-size: 15px;
+  -moz-box-sizing: border-box;
+  font-size: 16px;
   border: 5px solid #16a085;
   border-radius: 0;
-  padding: 10px 0;
-  line-height: 25px;
+  padding: 12px 0;
   text-align: center;
   color: #111;
 }
@@ -139,6 +141,23 @@ div.head a {
 }
 #search input::-moz-placeholder {
   color: #bbb;
+}
+#history {
+  width: 100%;
+  position: absolute;
+  top: 53px;
+  left: 0;
+  background-color: #fefefe;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
+}
+#history li {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #666;
+}
+#history li.active {
+  background-color: #eee;
 }
 div.gh-info {
   text-align: center;
@@ -152,27 +171,6 @@ div.gh-info {
 }
 div.gh-info iframe {
   display: inline-block;
-}
-div.hot-libs {
-  font-size: 0;
-  text-align: center;
-  background-color: #ECF0F1;
-  border-bottom: 1px solid #d2d6d7;
-  padding: 5px 0 15px;
-  display: none;
-}
-div.hot-libs a {
-  display: inline-block;
-  height: 30px;
-  margin-left: 15px;
-  margin-top: 10px;
-}
-div.hot-libs a:first-child {
-  margin-left: 0;
-}
-div.hot-libs a img {
-  vertical-align: middle;
-  height: 30px;
 }
 #loading {
   margin: 30px 0;
@@ -422,6 +420,10 @@ div.lib:after {
     width: 95%;
     padding: 0 2.5%;
   }
+  #history {
+    width: 95%;
+    left: 2.5%;
+  }
   #title {
     display: block;
   }
@@ -482,8 +484,8 @@ div.lib:after {
   -moz-animation: slideOut 0.5s forwards;
 }
 #load-cover.ng-leave {
-  -webkit-animation: fadeOut 1s forwards;
-  -moz-animation: fadeOut 1s forwards;
+  -webkit-animation: fadeOut 0.5s forwards;
+  -moz-animation: fadeOut 0.5s forwards;
 }
 #load-cover {
   position: absolute;
