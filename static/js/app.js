@@ -20,12 +20,9 @@ app.controller('viewController', function($scope, db, checkResult, isShow){
 })
 
 app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataFormatt, isShow, db){
-
     $scope.dataShow = dataShow;
-
 //    关闭加载动画
     isShow.loadCover = false;
-
 //    请求词义的url（jsonp）
     var url='http://fanyi.youdao.com/openapi.do?keyfrom=Kill-Words&key=679618694&type=data&doctype=jsonp&callback=JSON_CALLBACK&version=1.1&q=';
 
@@ -44,7 +41,6 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
             var q = $scope.query,
                 oldurl = url;
             if(q===' '|| q.length===0) return;
-
             $http.jsonp(oldurl+q).success(function(data){
                 display(data);
                 $scope.$emit('storeData');
@@ -59,22 +55,17 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
     }
 
     $scope.selectByKey = function(e){
-
         var kc = e.keyCode;
-
         if(kc!==38&&kc!==40&&kc!==13) return;
 //        防止光标移动
         e.preventDefault();
-
         var $ = angular.element,
             currentTarget = $(e.currentTarget);
             LIs = currentTarget.find('li'),
             input = currentTarget.find('input'),
             activeLI = LIs.filter('.active');
-
 //        去掉旧高亮
         activeLI.removeClass('active');
-
 //        向上选择
         if(kc===38){
             if(activeLI.length===0)
@@ -113,6 +104,7 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
 
     $scope.selectByClick = function(e){
         if(e.target.tagName.toLowerCase()!='li') return;
+
         var $ = angular.element,
             currentTarget = $(e.currentTarget),
             target = $(e.target),
@@ -124,10 +116,25 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
 
     }
 
+    $scope.bookmark = function(e){
+        if(e.target.tagName.toLowerCase()!=='span') return;
+
+        var $ = angular.element,
+            star = $(e.target);
+
+        if(!star.attr('class')){
+            star.addClass('marked');
+            $scope.$emit('bookmark');
+        }
+        else {
+            star.removeClass('marked');
+            $scope.$emit('delBookMark');
+        }
+    }
+
     function display(data){
 //        格式化接收到的对象为适合展示的对象
         $scope.data = dataFormatt(data);
-
         if($scope.data.mode==='w'){
             dataShow.isWord = true;
             $scope.header = {
@@ -148,20 +155,18 @@ app.controller('fetchData', function($scope, $http, $timeout, dataShow, dataForm
 app.controller('aboutCtrl', function($scope, isShow){
 //    简介默认不出现
     $scope.showAbout = isShow;
-
     $scope.hideAbout = function(){
         isShow.conponent = false;
     }
 });
 
 //存储历史数据
-app.factory('db', function(){
+app.factory('db', function(sortHistoryFilter){
     var ls = window.localStorage;
     return {
         store: function(str){
 //            如果是短语，那只分析第一个单词
             var w = str.split(' ')[0].toLowerCase(), key, valueList;
-
             for(var i=1; i<= w.length; i++){
                 key = w.slice(0, i);
                 if(!ls.getItem(key)){
@@ -180,7 +185,6 @@ app.factory('db', function(){
                     ls.setItem(key, valueList);
                 }
             }
-
         },
         retrieve: function(str){
             var key = str.split(' ')[0].toLowerCase(),
@@ -188,13 +192,15 @@ app.factory('db', function(){
             value = {
                 content: angular.fromJson(value)
             }
-            if(!value){
+            if(!value.content){
                 value = {
                     showList: false
                 }
             }
-            else value.showList = true;
-
+            else {
+                value.showList = true;
+                value.content = sortHistoryFilter(value.content);
+            }
             return value;
         }
     }
@@ -203,27 +209,20 @@ app.factory('db', function(){
 //格式化返回的数据
 app.factory('dataFormatt', function(checkResult){
     return function(data){
-
         checkResult.title = data.query
-
         if(data.basic){
-
             checkResult.basic = {};
-
             var explains = checkResult.basic.explains = [];
             angular.forEach(data.basic.explains, function(value){
                 var temp = {};
-
 //                当中译英的时候，这里有可能会没有词类前缀
                 temp.type = value.match(/\b[a-z]+\./);
-
                 if(temp.type != null){
                     temp.type = temp.type.toString();
                     temp.content = value.slice(temp.type.length, -1);
                 }
                 else
                     temp.content = value;
-
                 explains.push(temp);
             })
 //            中译英有的没有拼音注音
@@ -231,7 +230,6 @@ app.factory('dataFormatt', function(checkResult){
                 checkResult.basic.pronounce = data.basic.phonetic;
             else
                 checkResult.basic.pronounce = '暂无发音';
-
             if(data.web){
                 checkResult.web = data.web;
             }
@@ -241,17 +239,13 @@ app.factory('dataFormatt', function(checkResult){
         }
         else if(data.translation){
             checkResult.translation = data.translation[0];
-
             //        判断是否该记录词条
             if(checkResult.title.toLowerCase() === checkResult.translation)
-
                 checkResult.recordAbility = false;
             else
                 checkResult.recordAbility = true;
-
             checkResult.mode = 's';
         }
-
         return checkResult;
     }
 });
@@ -270,3 +264,20 @@ app.value('dataShow', {
 
 //查询结果对象
 app.value('checkResult', {});
+
+//让历史结果按长度排
+app.filter('sortHistory', function(){
+    return function(histArr, reverse){
+        for(var i=0; i<histArr.length-1; i++){
+            for(var j=0;j<histArr.length-1;j++){
+                if(histArr[j].length>histArr[j+1].length){
+                    var temp = histArr[j];
+                    histArr[j] = histArr[j+1];
+                    histArr[j+1]=temp;
+                }
+            }
+        }
+        if(reverse) histArr.reverse();
+        return histArr;
+    }
+});

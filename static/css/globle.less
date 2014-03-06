@@ -1,0 +1,84 @@
+@z: 1;
+
+@globleFontFamily:"Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+.clearPrefix {
+    content: '';
+    display: block;
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+.transitionFn(@prop:all, @decor: 0.7s){
+    -webkit-transition: @prop @decor;
+    -moz-transition: @prop @decor;
+    -ms-transition: @prop @decor;
+    -o-transition: @prop @decor;
+    transition: @prop @decor;
+}
+
+@font-face {
+    font-family: 'killWords';
+    src:url('../fonts/killWords.eot?-ho0e9a');
+    src:url('../fonts/killWords.eot?#iefix-ho0e9a') format('embedded-opentype'),
+    url('../fonts/killWords.woff?-ho0e9a') format('woff'),
+    url('../fonts/killWords.ttf?-ho0e9a') format('truetype'),
+    url('../fonts/killWords.svg?-ho0e9a#killWords') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bookmark';
+    src:url('../fonts/bookmark.eot?b1vv1l');
+    src:url('../fonts/bookmark.eot?#iefixb1vv1l') format('embedded-opentype'),
+    url('../fonts/bookmark.woff?b1vv1l') format('woff'),
+    url('../fonts/bookmark.ttf?b1vv1l') format('truetype'),
+    url('../fonts/bookmark.svg?b1vv1l#bookmark') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    height: 100%;
+}
+body {
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    font-family: @globleFontFamily;
+}
+
+h5 {
+    font-weight: normal;
+    font-size: 16px/@z;
+    margin: 0 0 10px 0/@z;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+
+
+::selection {
+    background-color: #1ABC9C;
+    color: #fff;
+}
+
+::-moz-selection {
+    background-color: #1ABC9C;
+    color: #fff;
+}

@@ -26,7 +26,7 @@
     <div class="libs">
         <p id="loading" ng-if="!dataShow.loaded">I'm waiting...</p>
         <div class="lib" ng-if="dataShow.loaded">
-            <h2>{{data.title}}</h2>
+            <h2>{{data.title}}<span ng-click="bookmark($event)">h<span>收藏/取消收藏单词</span></span></h2>
             <table>
                 <tbody>
                 <tr>
