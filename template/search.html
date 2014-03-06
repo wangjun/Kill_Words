@@ -13,9 +13,9 @@
             <pre>使用方法：在搜索框中输入要查询的内容</pre>
         </div>
         <div id="search" ng-keydown="selectByKey($event)" ng-mouseover="selectByCursor($event)" ng-click="selectByClick($event)">
-            <input ng-change="check()" ng-model="query" type="text" placeholder="请输入中文或英文 .." autofocus autocomplete="off"/>
-            <ul id="history" ng-if="history.showList">
-                <li ng-repeat="h in history.content">{{h}}</li>
+            <input ng-change="check()" ng-blur="blur()" ng-model="query" type="text" placeholder="请输入中文或英文 .." autofocus autocomplete="off"/>
+            <ul id="history" ng-if="isShow.historyList">
+                <li ng-repeat="h in history">{{h}}</li>
             </ul>
         </div>
         <div class="gh-info">
