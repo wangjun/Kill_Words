@@ -2,7 +2,7 @@ var services = angular.module('services', []);
 
 
 //存储历史数据
-services.factory('db', function(sortHistoryFilter){
+services.factory('db', function(sortHistoryFilter, checkResult){
     var ls = window.localStorage;
     return {
         store: function(str){
@@ -31,7 +31,6 @@ services.factory('db', function(sortHistoryFilter){
             var key = str.split(' ')[0].toLowerCase(),
                 value = ls.getItem(key);
             value = angular.fromJson(value);
-            console.log(value);
             if(!value) return null;
             else value = sortHistoryFilter(value);
             return value;
@@ -85,15 +84,8 @@ services.factory('dataFormatt', function(checkResult){
 
 //决定内容是否出现的service
 services.value('isShow', {
-    conponent: false,
     loadCover: true,
     historyList: false
-});
-
-//fetchData配置
-services.value('dataShow', {
-    loaded: false,
-    isWord: false
 });
 
 //查询结果对象

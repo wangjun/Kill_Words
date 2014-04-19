@@ -9,7 +9,13 @@ var killws = angular.module('killws', [
 
 killws.config(function($routeProvider){
     $routeProvider
-        .when('/', {
+        .when('/search', {
             templateUrl: 'template/search.html'
+        })
+        .when('/about', {
+            templateUrl: 'template/about.html'
+        })
+        .otherwise({
+            redirectTo: '/search'
         })
 })

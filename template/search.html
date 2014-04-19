@@ -5,7 +5,7 @@
             <ul id="entrance">
                 <li><a href="">查询历史</a> / </li>
                 <li><a href="">生词本</a> / </li>
-                <li><a href="javascript:void(0);" ng-click="showAbout()">简介</a></li>
+                <li><a href="#/about">简介</a></li>
             </ul>
         </div>
         <div id="purpose">
@@ -24,22 +24,22 @@
         </div>
     </div>
     <div class="libs">
-        <p id="loading" ng-if="!dataShow.loaded">I'm waiting...</p>
-        <div class="lib" ng-if="dataShow.loaded">
-            <h2>{{data.title}}<span ng-click="bookmark($event)">h<span>收藏/取消收藏单词</span></span></h2>
+        <p id="loading" ng-if="!checkView.loaded">I'm waiting...</p>
+        <div class="lib" ng-if="checkView.loaded">
+            <h2>{{data.title}}<span title="变红加入生词本，变灰从生词本移除" ng-click="bookmark($event)">h</span></h2>
             <table>
                 <tbody>
                 <tr>
                     <th>{{header.mainTitle}}</th>
                     <td>
-                        <h5 class="pronounce" ng-if="dataShow.isWord">[&nbsp;{{data.basic.pronounce}}&nbsp;]</h5>
+                        <h5 class="pronounce" ng-if="checkView.isWord">[&nbsp;{{data.basic.pronounce}}&nbsp;]</h5>
                         <ul class="meaning">
-                            <li ng-if="dataShow.isWord" ng-repeat="item in data.basic.explains"><i>{{item.type}}&nbsp;</i>{{item.content}}</li>
-                            <li ng-if="!dataShow.isWord">{{data.translation}}</li>
+                            <li ng-if="checkView.isWord" ng-repeat="item in data.basic.explains"><i>{{item.type}}&nbsp;</i>{{item.content}}</li>
+                            <li ng-if="!checkView.isWord">{{data.translation}}</li>
                         </ul>
                     </td>
                 </tr>
-                <tr ng-if="dataShow.isWord">
+                <tr ng-if="checkView.isWord">
                     <th>{{header.subTitle}}</th>
                     <td>
                         <ul class="extend" ng-repeat="item in data.web">
@@ -57,17 +57,4 @@
         <p><small>&copy; Copyright 2014<a href="https://github.com/sunivengg"><em> sunaiwen </em></a>.Built upon love.</small></p>
     </div>
 </div>
-<div ng-controller="aboutCtrl">
-    <div id="about" ng-if="showAbout.conponent">
-        <div id="ab-toolbar">
-            <a href="javascript:void(0);" ng-click="hideAbout()"></a>
-        </div>
-        <div class="ab-content">
-            <h1>关于 Kill Words</h1>
-            <p>这是个人的一个小项目。为了学习AngularJs而存在。</p>
-        </div>
-        <div id="ab-contact">
-            <a class="ic-github" target="_blank" href="http://github.com/sunivengg">g</a><a class="ic-weibo" target="_blank" href="http://weibo.com/sualwaysnai/">s</a><a class="ic-twitter" target="_blank" href="http://twitter.com/sunivengg">t</a><a href="javascript:void(0)" class="ic-email">e<span>sunivengg@gmail.com</span></a>
-        </div>
-    </div>
-</div>
+

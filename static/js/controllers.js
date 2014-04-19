@@ -9,9 +9,13 @@ controllers.controller('viewController', function($scope, db, checkResult, isSho
     $scope.cover = isShow;
 })
 
-controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, dataFormatt, isShow, db){
-    $scope.dataShow = dataShow;
+controllers.controller('fetchData', function($scope, $http, $timeout, dataFormatt, isShow, db){
+//    $scope.dataShow = dataShow;
     $scope.isShow = isShow;
+    $scope.checkView = {
+        isWord: false,
+        loaded: false
+    }
     $scope.$on('change', function(){
         $scope.check();
     })
@@ -28,7 +32,7 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
         if($scope.timeoutID) $timeout.cancel($scope.timeoutID);
         $scope.timeoutID = $timeout(function(){
             //        显示加载字样
-            dataShow.loaded = false;
+            $scope.checkView.loaded = false;
             var q = $scope.query,
                 oldurl = url;
             if(q===' '|| q.length===0) return;
@@ -41,13 +45,9 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
         }, 500);
     }
 
-    $scope.showAbout = function(){
-        isShow.conponent = true;
-    }
-
     $scope.selectByKey = function(e){
         var kc = e.keyCode;
-        if(kc!==38&&kc!==40&&kc!==13) return;
+        if(kc!==38&&kc!==40&&kc!==13&&kc!==27) return;
 //        防止光标移动
         e.preventDefault();
         var $ = angular.element,
@@ -67,7 +67,7 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
             }
         }
 //        向下选择
-        if(kc===40){
+        else if(kc===40){
             if(activeLI.length===0)
                 LIs.eq(0).addClass('active');
             else{
@@ -75,8 +75,9 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
                 if(next) next.addClass('active');
             }
         }
-
-        if(kc===13){
+//        esc键
+        else if(kc===27) $timeout(function(){isShow.historyList = false;}, 20);
+        else if(kc===13){
 //        把高亮条目的值写到输入框内
             $scope.query = activeLI.text();
             $scope.$emit('change');
@@ -126,7 +127,7 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
 //        格式化接收到的对象为适合展示的对象
         $scope.data = dataFormatt(data);
         if($scope.data.mode==='w'){
-            dataShow.isWord = true;
+            $scope.checkView.isWord = true;
             $scope.header = {
                 mainTitle: '单词释义',
                 subTitle: '词义扩展'
@@ -136,16 +137,12 @@ controllers.controller('fetchData', function($scope, $http, $timeout, dataShow, 
             $scope.header = {
                 mainTitle: '翻译结果'
             }
-            dataShow.isWord= false;
+            $scope.checkView.isWord= false;
         }
-        dataShow.loaded=true;
+        $scope.checkView.loaded=true;
     }
 });
 
 controllers.controller('aboutCtrl', function($scope, isShow){
-//    简介默认不出现
-    $scope.showAbout = isShow;
-    $scope.hideAbout = function(){
-        isShow.conponent = false;
-    }
+    $scope.test = true;
 });

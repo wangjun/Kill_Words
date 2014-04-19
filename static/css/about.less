@@ -1,0 +1,155 @@
+
+//about
+#about {
+    position: fixed;
+    font-size: 0px;
+    border-left: 1px solid #1c986e;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    box-shadow: -2px 0 5px 0 rgba(0,0,0,0.2);
+    background-color: #fafafa;
+    &>div {
+        display: inline-block;
+    }
+    .ab-content {
+        box-sizing: border-box;
+        //        这个属性竟然连ff 27都还要加前缀，看来要三思而用
+        -moz-box-sizing: border-box;
+        padding-left: 5%;
+        width: 95%;
+        vertical-align: top;
+        font-size: 17px;
+        color: #777;
+    }
+}
+
+#ab-toolbar {
+    position: relative;
+    z-index: 100;
+    width: 5%;
+    height: 100%;
+    cursor: pointer;
+    .transitionFn(background-color, 0.4s);
+    a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        &:after {
+            content: '<';
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            margin-top: -20px;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-family: killWords;
+            color: #fff;
+            background-color: #1ABC9C;
+        }
+    }
+    &:hover {
+        background-color: #1ABC9C;
+    }
+}
+
+#ab-contact{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: #ccc;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 25px;
+    a {
+        display: inline-block;
+        position: relative;
+        font-size: inherit;
+        vertical-align: middle;
+        margin: 0 10px;
+        font-family: killWords;
+        color: #888;
+        text-decoration: none;
+        .transitionFn(color, 0.4s);
+        &.ic-github:hover {
+            color: #222;
+        }
+        &.ic-weibo:hover {
+            color: #da412d;
+        }
+        &.ic-twitter:hover {
+            color: #5e97cb;
+        }
+        &.ic-email {
+            &:hover {
+                color: #759b4e;
+                span {
+                    visibility: visible;
+                    color: #555;
+                }
+            }
+            span {
+                position: absolute;
+                padding: 10px;
+                width: 150px;
+                left: -76px;
+                top: -40px;
+                line-height: 20px;
+                font-size: 10px;
+                font-family: @globleFontFamily;
+                text-align: center;
+                background-color: #fff;
+                visibility: hidden;
+                box-shadow: 0 1px 4px 0 rgba(0,0,0,0.3);
+                &:after {
+                    content: '';
+                    position: absolute;
+                    left: 50%;
+                    top: 100%;
+                    margin-left: -6px;
+                    width: 0px;
+                    height: 0px;
+                    border-top: 10px solid #fff;
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                }
+            }
+        }
+    }
+}
+
+@media all and (max-width: 768px) {
+    //    about
+    #about {
+        &>div {
+            display: block;
+        }
+        .ab-content {
+            width: 100%;
+            h1 {
+                text-align: center;
+                font-size: 20px;
+            }
+            p{
+                font-size: 14px;
+            }
+        }
+    }
+
+    #ab-toolbar{
+        position: absolute;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        &:after {
+            top: 0;
+            margin: 0px;
+        }
+    }
+
+}

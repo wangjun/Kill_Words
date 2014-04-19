@@ -58,50 +58,50 @@ img {
 }
 @-webkit-keyframes slideIn {
   0% {
-    width: 0;
+    right: -100%;
   }
   100% {
-    width: 100%;
+    right: 0%;
   }
 }
 @-moz-keyframes slideIn {
   0% {
-    width: 0;
+    right: -100%;
   }
   100% {
-    width: 100%;
+    right: 0%;
   }
 }
 @keyframes slideIn {
   0% {
-    width: 0;
+    right: -100%;
   }
   100% {
-    width: 100%;
+    right: 0%;
   }
 }
 @-webkit-keyframes slideOut {
   0% {
-    width: 100%;
+    right: 0%;
   }
   100% {
-    width: 0%;
+    right: -100%;
   }
 }
 @-moz-keyframes slideOut {
   0% {
-    width: 100%;
+    right: 0%;
   }
   100% {
-    width: 0%;
+    right: -100%;
   }
 }
 @keyframes slideOut {
   0% {
-    width: 100%;
+    right: 0%;
   }
   100% {
-    width: 0%;
+    right: -100%;
   }
 }
 @-webkit-keyframes fadeIn {
@@ -290,6 +290,7 @@ div.head a {
 div.gh-info {
   text-align: center;
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   font-size: 0;
   margin-top: 40px;
@@ -320,47 +321,16 @@ div.lib h2 {
   font-weight: normal;
 }
 div.lib h2 span {
-  position: relative;
   font-family: bookmark;
   font-size: 30px;
-  line-height: 30px;
-  vertical-align: middle;
-  color: #bcbcbc;
+  line-height: 40px;
+  color: #ccc;
   margin-left: 20px;
+  vertical-align: middle;
   cursor: pointer;
 }
 div.lib h2 span.marked {
-  color: #DA412D;
-}
-div.lib h2 span:hover span {
-  visibility: visible;
-}
-div.lib h2 span span {
-  position: absolute;
-  padding: 10px;
-  width: 150px;
-  left: -95px;
-  top: -55px;
-  line-height: 20px;
-  font-size: 10px;
-  font-family: "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
-  text-align: center;
-  background-color: #000;
-  border-radius: 8px;
-  color: #eee;
-  visibility: hidden;
-}
-div.lib h2 span span:after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  margin-left: -6px;
-  width: 0px;
-  height: 0px;
-  border-top: 10px solid #000;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
+  color: #ff2530;
 }
 div.lib > p {
   margin: 10px 0 0 0;
@@ -455,6 +425,119 @@ div.lib:after {
 #footer p small {
   margin: 0 4px;
 }
+@media all and (max-width: 768px) {
+  #header {
+    text-align: center;
+  }
+  #purpose {
+    display: none;
+  }
+  #search {
+    width: 95%;
+    padding: 0 2.5%;
+  }
+  #history {
+    width: 95%;
+    left: 2.5%;
+  }
+  #title {
+    display: block;
+  }
+  #title,
+  #entrance {
+    float: none;
+  }
+  #entrance {
+    margin-top: 10px;
+  }
+  #entrance li {
+    float: none;
+    display: inline;
+  }
+  div.lib {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  #footer {
+    width: 90%;
+  }
+  th,
+  td {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px 5px !important;
+  }
+}
+#load-cover.ng-leave {
+  -webkit-animation: fadeOut 0.3s forwards;
+  -moz-animation: fadeOut 0.3s forwards;
+}
+#load-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 1000;
+}
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -15px;
+  width: 50px;
+  height: 30px;
+  text-align: center;
+  font-size: 10px;
+}
+.spinner > div {
+  background-color: #1ABC9C;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+  animation: stretchdelay 1.2s infinite ease-in-out;
+}
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+.spinner .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+@-webkit-keyframes stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
+}
+@keyframes stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}
 #about {
   position: fixed;
   font-size: 0px;
@@ -496,7 +579,7 @@ div.lib:after {
   height: 100%;
 }
 #ab-toolbar a:after {
-  content: '>';
+  content: '<';
   font-size: 20px;
   position: absolute;
   top: 50%;
@@ -581,47 +664,6 @@ div.lib:after {
   border-right: 10px solid transparent;
 }
 @media all and (max-width: 768px) {
-  #header {
-    text-align: center;
-  }
-  #purpose {
-    display: none;
-  }
-  #search {
-    width: 95%;
-    padding: 0 2.5%;
-  }
-  #history {
-    width: 95%;
-    left: 2.5%;
-  }
-  #title {
-    display: block;
-  }
-  #title,
-  #entrance {
-    float: none;
-  }
-  #entrance {
-    margin-top: 10px;
-  }
-  #entrance li {
-    float: none;
-    display: inline;
-  }
-  div.lib {
-    padding-left: 2%;
-    padding-right: 2%;
-  }
-  #footer {
-    width: 90%;
-  }
-  th,
-  td {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 10px 5px !important;
-  }
   #about > div {
     display: block;
   }
@@ -644,83 +686,5 @@ div.lib:after {
   #ab-toolbar:after {
     top: 0;
     margin: 0px;
-  }
-}
-#about.ng-enter {
-  -webkit-animation: slideIn 0.5s forwards;
-  -moz-animation: slideIn 0.5s forwards;
-}
-#about.ng-leave {
-  -webkit-animation: slideOut 0.5s forwards;
-  -moz-animation: slideOut 0.5s forwards;
-}
-#load-cover.ng-leave {
-  -webkit-animation: fadeOut 0.5s forwards;
-  -moz-animation: fadeOut 0.5s forwards;
-}
-#load-cover {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  z-index: 1000;
-}
-.spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -25px;
-  margin-top: -15px;
-  width: 50px;
-  height: 30px;
-  text-align: center;
-  font-size: 10px;
-}
-.spinner > div {
-  background-color: #1ABC9C;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-  -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
-  animation: stretchdelay 1.2s infinite ease-in-out;
-}
-.spinner .rect2 {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
-}
-.spinner .rect3 {
-  -webkit-animation-delay: -1s;
-  animation-delay: -1s;
-}
-.spinner .rect4 {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-.spinner .rect5 {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
-@-webkit-keyframes stretchdelay {
-  0%,
-  40%,
-  100% {
-    -webkit-transform: scaleY(0.4);
-  }
-  20% {
-    -webkit-transform: scaleY(1);
-  }
-}
-@keyframes stretchdelay {
-  0%,
-  40%,
-  100% {
-    transform: scaleY(0.4);
-    -webkit-transform: scaleY(0.4);
-  }
-  20% {
-    transform: scaleY(1);
-    -webkit-transform: scaleY(1);
   }
 }
